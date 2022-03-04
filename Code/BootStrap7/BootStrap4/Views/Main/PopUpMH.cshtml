@@ -1,0 +1,28 @@
+﻿
+@model PagedList.IPagedList<BootStrap4.Models.Mon_Hoc.MonHocModel>
+@{
+    ViewBag.Title = "PopUpEdit";
+}
+<div class="modal-content" style="width:500px;height:300px">
+    <div class="modal-header">
+        <h2>Edit Subject</h2>
+        <button id="btnClose" type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+        <form id="formdata" method="POST">
+            <div class="form-group">
+                <label>Mã môn:</label>
+                <input type="text" name="maMon" class="form-control form-control-user" id="maMon" >
+            </div>
+            <div class="form-group">
+                <label>Tên Môn:</label>
+                <input type="text" name="tenMon" id="tenMon" class="form-control form-control-user">
+            </div> 
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary button button4" data-save="modal" id="Update" onclick="Update()">Update</button>
+        <button type="button" class="btn btn-primary button button4" id="Cancel">Cancel</button>
+    </div> 
+</div>
+

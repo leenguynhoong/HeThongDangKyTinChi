@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="dtbtt1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DangKyTins" EntityType="Model.DangKyTin" />
+    <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagram" />
+    <EntitySet Name="TaiKhoans" EntityType="Model.TaiKhoan" />
+    <AssociationSet Name="FK__DangKyTin__TenTa__09A971A2" Association="Model.FK__DangKyTin__TenTa__09A971A2">
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+      <End Role="DangKyTin" EntitySet="DangKyTins" />
+    </AssociationSet>
+    <EntitySet Name="MonHocs" EntityType="Model.MonHoc" />
+    <AssociationSet Name="FK__DangKyTin__MaMon__0A9D95DB" Association="Model.FK__DangKyTin__MaMon__0A9D95DB">
+      <End Role="MonHoc" EntitySet="MonHocs" />
+      <End Role="DangKyTin" EntitySet="DangKyTins" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DangKyTin">
+    <Key>
+      <PropertyRef Name="MaDangKy" />
+    </Key>
+    <Property Name="MaDangKy" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenTaiKhoan" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="MaMon" Type="Int32" Nullable="false" />
+    <Property Name="NgayTao" Type="DateTime" Precision="0" />
+    <Property Name="NgaySua" Type="DateTime" Precision="0" />
+    <Property Name="NguoiTao" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="NguoiSua" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TaiKhoan" Relationship="Model.FK__DangKyTin__TenTa__09A971A2" FromRole="DangKyTin" ToRole="TaiKhoan" />
+    <NavigationProperty Name="MonHoc" Relationship="Model.FK__DangKyTin__MaMon__0A9D95DB" FromRole="DangKyTin" ToRole="MonHoc" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TaiKhoan">
+    <Key>
+      <PropertyRef Name="TenTaiKhoan" />
+    </Key>
+    <Property Name="TenTaiKhoan" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="MatKhau" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="HoTen" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Quyen" Type="Boolean" />
+    <Property Name="NgayTao" Type="DateTime" Precision="0" />
+    <Property Name="NgaySua" Type="DateTime" Precision="0" />
+    <Property Name="NguoiTao" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="NguoiSua" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DangKyTins" Relationship="Model.FK__DangKyTin__TenTa__09A971A2" FromRole="TaiKhoan" ToRole="DangKyTin" />
+  </EntityType>
+  <Association Name="FK__DangKyTin__TenTa__09A971A2">
+    <End Type="Model.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+    <End Type="Model.DangKyTin" Role="DangKyTin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TaiKhoan">
+        <PropertyRef Name="TenTaiKhoan" />
+      </Principal>
+      <Dependent Role="DangKyTin">
+        <PropertyRef Name="TenTaiKhoan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="MonHoc">
+    <Key>
+      <PropertyRef Name="MaMon" />
+    </Key>
+    <Property Name="MaMon" Type="Int32" Nullable="false" />
+    <Property Name="TenMon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="NgayTao" Type="DateTime" Precision="0" />
+    <Property Name="NgaySua" Type="DateTime" Precision="0" />
+    <Property Name="NguoiTao" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="NguoiSua" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DangKyTins" Relationship="Model.FK__DangKyTin__MaMon__0A9D95DB" FromRole="MonHoc" ToRole="DangKyTin" />
+  </EntityType>
+  <Association Name="FK__DangKyTin__MaMon__0A9D95DB">
+    <End Type="Model.MonHoc" Role="MonHoc" Multiplicity="1" />
+    <End Type="Model.DangKyTin" Role="DangKyTin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MonHoc">
+        <PropertyRef Name="MaMon" />
+      </Principal>
+      <Dependent Role="DangKyTin">
+        <PropertyRef Name="MaMon" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,28 @@
+﻿
+@model PagedList.IPagedList<BootStrap4.Models.Mon_Hoc.MonHocModel>
+@{
+    ViewBag.Title = "PopUpCreate";
+}
+<div class="modal-content" style="width:500px;height:300px">
+    <div class="modal-header">
+        <h2>Thêm môn học</h2>
+        <button id="btnClose" type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+        <form id="formdata" method="POST">
+            <div class="form-group">
+                <b><h3>Mã môn:</h3></b>
+                <input type="text" name="CmaMon" class="form-control form-control-user" id="PCreateMaMon">
+            </div>
+            <div class="form-group">
+                <b><h3>Tên Môn:</h3></b>
+                <input type="text" name="CtenMon" id="PCreateTenMon" class="form-control form-control-user">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary button button5" data-save="modal" id="Update" onclick="CreateMH()">Create</button>
+        <button type="button" class="btn btn-primary button button5" id="Cancel">Cancel</button>
+    </div>
+</div>
+

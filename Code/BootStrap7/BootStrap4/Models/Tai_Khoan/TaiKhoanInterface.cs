@@ -8,12 +8,27 @@ namespace BootStrap4.Models.Tai_Khoan
 {
     interface TaiKhoanInterface
     {
-        IEnumerable<TaiKhoan> TaiKhoan();
-        TaiKhoan GetTaiKhoanById(int taiKhoanId);
+        IEnumerable<TaiKhoanModel> GetListTK();
+        TaiKhoanModel GetTaiKhoan(string tenTK);
 
-        void Login(TaiKhoan taiKhoan);
+        TaiKhoanModel GetTaiKhoanByTK(string tenTK);
 
-        void Logout(TaiKhoan taiKhoan);
+        string GetTenTK();
+        string GetMatKhau();
+
+        string GetHoTen(string tenTK);
+
+        TaiKhoanModel Create(string tenTk, string matKhau, string quyen, string nguoiTao, DateTime ngayTao);
+
+        TaiKhoanModel Update(string tenTk, string matKhau, string quyen);
+
+        TaiKhoanModel Delete(string tenTk);
+
+        bool Login(string tenTK, string mK);
+
+        bool Logout();
+
+        
 
         
     }

@@ -11,7 +11,6 @@ namespace BootStrap4.Controllers
 {
     public class LoginController : Controller
     {
-
         // GET: Login
         public ActionResult LoginIndex()
         {

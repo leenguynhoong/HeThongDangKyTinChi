@@ -8,7 +8,8 @@ using BootStrap4.Models;
 using BootStrap4.Models.Dang_Ky_Tin;
 using BootStrap4.Models.Tai_Khoan;
 using BootStrap4.Models.Mon_Hoc;
-
+using CrystalDecisions.CrystalReports.Engine;
+using System.IO;
 
 namespace BootStrap4.Controllers
 {
@@ -63,6 +64,8 @@ namespace BootStrap4.Controllers
                     return DeleteDKT(frmCollection);
                 case "Search":
                     return FilterDKT(searchString);
+                case "Xuất danh sách":
+                    return DownPDFDKT();
                 case "Refresh":
                     return RedirectToAction("DangKyTinChi");
                 default:
@@ -105,6 +108,8 @@ namespace BootStrap4.Controllers
                     return FilterMonHoc(searchString);
                 case "Refresh":
                     return RedirectToAction("QuanLyMonHoc");
+                case "Xuất danh sách":
+                    return DownPDFMH();
                 default:
                     return View("Index");
             }
@@ -280,13 +285,13 @@ namespace BootStrap4.Controllers
         }
         public ActionResult CreateDKT(FormCollection frmCollection)
         {
-            try
-            {
+            //try
+            //{
                 string tenTK = Session["User"].ToString();
+               
                 string[] ids = frmCollection["checkboxid"].Split(new char[] { ',' });
                 var tk = new TaiKhoanHandler().GetHoTen(tenTK);
                 var dkt = new DangKyTinHandler();
-
                 foreach (string id in ids)
                 {
                     var result = dkt.CreateDKT(int.Parse(id), tenTK, tk, DateTime.Now);
@@ -300,11 +305,11 @@ namespace BootStrap4.Controllers
                     }
                 }
                 return RedirectToAction("QuanLyMonHoc");
-            }
-            catch (Exception ex)
-            {
-                return Content(ex.Message);
-            }  
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Content(ex.Message);
+            //}  
         }
 
         public ActionResult DeleteDKT(FormCollection frmCollection)
@@ -352,17 +357,10 @@ namespace BootStrap4.Controllers
             catch (Exception e)
             {
                 return false;
-            }
-            
-            
+            }   
         }
 
         public ActionResult Edit(MonHocModel monHocModel)
-        {
-            return View();
-        }
-
-        public ActionResult quanLyTaiKhoan()
         {
             return View();
         }
@@ -372,5 +370,53 @@ namespace BootStrap4.Controllers
             return View("LoginIndex");
         }
 
+        public ActionResult DownPDFDKT()
+        {
+            dtbtt1Entities context = new dtbtt1Entities();
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Report"), "ReportDKT.rpt"));
+
+            rd.SetDataSource(context.DangKyTins.Select(c => new
+            {
+                MaDangKy = c.MaDangKy,
+                TenTaiKhoan = c.TenTaiKhoan,
+                MaMon = c.MaMon
+
+            }).ToList());
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            rd.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Landscape;
+            rd.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+            rd.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA5;
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(stream, "application/pdf", "DSDangKyTin.pdf");
+        }
+
+        public ActionResult DownPDFMH()
+        {
+            dtbtt1Entities context = new dtbtt1Entities();
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/Report"), "ReportMH.rpt"));
+            rd.SetDataSource(context.MonHocs.Select(c => new
+            {
+                MaMon = c.MaMon,
+                TenMon = c.TenMon,
+                NguoiTao = c.NguoiTao
+
+            }).ToList());
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            rd.PrintOptions.PaperOrientation = CrystalDecisions.Shared.PaperOrientation.Landscape;
+            rd.PrintOptions.ApplyPageMargins(new CrystalDecisions.Shared.PageMargins(5, 5, 5, 5));
+            rd.PrintOptions.PaperSize = CrystalDecisions.Shared.PaperSize.PaperA5;
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(stream, "application/pdf", "DSMonHoc.pdf");
+        }
     }
 }

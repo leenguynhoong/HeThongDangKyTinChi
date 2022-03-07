@@ -7,7 +7,7 @@
       <Diagram DiagramId="4958324970d04928b73fe980bb2c3c77" Name="Diagram1">
         <EntityTypeShape EntityType="Model.DangKyTin" Width="1.5" PointX="4" PointY="0.875" />
         <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="6" PointY="4.25" />
-        <EntityTypeShape EntityType="Model.TaiKhoan" Width="1.5" PointX="6.25" PointY="1.25" />
+        <EntityTypeShape EntityType="Model.TaiKhoan" Width="1.5" PointX="7.75" PointY="0.875" />
         <AssociationConnector Association="Model.FK__DangKyTin__TenTa__09A971A2" />
         <EntityTypeShape EntityType="Model.MonHoc" Width="1.5" PointX="1.75" PointY="1.125" />
         <AssociationConnector Association="Model.FK__DangKyTin__MaMon__0A9D95DB" />

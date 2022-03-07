@@ -1,9 +1,9 @@
-﻿@model PagedList.IPagedList<BootStrap4.Models.Mon_Hoc.MonHocModel>
+﻿@model PagedList.IPagedList<BootStrap4.Models.Tai_Khoan.TaiKhoanModel>
 @using PagedList.Mvc;
 
 
 @{
-    ViewBag.Title = "Quản lý môn học";
+    ViewBag.Title = "Quản lý Tài Khoản";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -46,7 +46,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-primary text-center">Quản lý môn học</h4>
+                            <h4 class="m-0 font-weight-bold text-primary text-center">Quản lý tài khoản</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -68,31 +68,33 @@
                                                 <i class="fa-solid fa-arrows-rotate"></i>
                                             </button>
                                         </div>
-
                                     </div>
-
                                 }
                                 <div class="float-right mr-2">
+                                    <a href="@Url.Action("Download_PDF","TaiKhoan")" " target="_blank" class="btn btn-primary" style="margin-top:20px;">Xuất dữ liệu</a>
                                     <input type="submit" class="btn btn-primary" onclick="Create()" value="Tạo">
                                 </div>
 
 
-                                @using (Html.BeginForm("MethodMonHoc", "Main", FormMethod.Post))
+
+                                @using (Html.BeginForm("MethodTaiKhoan", "TaiKhoan", FormMethod.Post))
                                 {
-                                <div class="float-right mr-2">
-                                    <input type="submit" name="submitButton" class="btn btn-primary" value="Xóa">
-                                    <input type="submit" name="submitButton" class="btn btn-primary" value="Đăng ký">
-                                    <input type="submit" name="submitButton" class="btn btn-primary" value="Xuất danh sách">
-                                </div>
+                                    <div class="float-right mr-2">
+                                        <input type="submit" name="submitButton" class="btn btn-primary" value="Xóa">
+                                    </div>
+                                    <div class="float-right mr-2">
+                                        <input type="submit" name="submitButton" class="btn btn-primary" value="Xuất danh sách">
+                                    </div>
                                     <table class="table table-bordered te text-center" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr role="row">
                                                 <th class="col-1 ">
                                                     <input type="checkbox" onClick="selectall(this)" />
                                                 </th>
-                                                <th>Mã Môn</th>
-                                                <th>Tên Môn</th>
-                                                <th class="col-2 ">Chọn</th>
+                                                <th>Tên tài khoản</th>
+                                                <th>Mật khẩu</th>
+                                                <th>Quyền</th>
+                                                <th class="col-2">Chọn</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,22 +102,25 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        <input type="checkbox" class="CheckboxId" value="@Model[i].MaMon" id="checkboxid"
+                                                        <input type="checkbox" class="CheckboxId" value="@Model[i].TenTaiKhoan" id="checkboxid"
                                                                name="checkboxid" />
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(Model => Model[i].MaMon, new { @name = "MaMon" })
-                                                        @Html.HiddenFor(Model => Model[i].MaMon)
+                                                        @Html.DisplayFor(Model => Model[i].TenTaiKhoan, new { @name = "TenTaiKhoan" })
+                                                        @Html.HiddenFor(Model => Model[i].TenTaiKhoan)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(Model => Model[i].TenMon, new { @name = "TenMon" })
-                                                        @Html.HiddenFor(Model => Model[i].TenMon)
+                                                        @Html.DisplayFor(Model => Model[i].MatKhau, new { @name = "MatKhau" })
+                                                        @Html.HiddenFor(Model => Model[i].MatKhau)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(Model => Model[i].Quyen, new { @name = "Quyen" })
+                                                        @Html.HiddenFor(Model => Model[i].Quyen)
                                                     </td>
                                                     <td>
                                                         <span>
-                                                            <a href="#" class="btn btn-primary btn-user btnRegis" data-target="#regisModal" onclick="Regis(@Model[i].MaMon)">Regis</a>
-                                                            <a href="#" class="btn btn-primary btn-user btnEdit" data-target="#myModal" onclick="Edit(@Model[i].MaMon)">Edit</a>
-                                                            <a href="#" class="btn btn-danger btn-user btnDelete" data-target="#delModal" onclick="Delete(@Model[i].MaMon)">Delete</a>
+                                                            <a href="#" class="btn btn-primary btn-user btnEdit" data-target="#myModal" onclick="Edit(@Model[i].TenTaiKhoan)">Edit</a>
+                                                            <a href="#" class="btn btn-danger btn-user btnDelete" data-target="#delModal" onclick="Delete(@Model[i].TenTaiKhoan)">Delete</a>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -128,7 +133,7 @@
                                     </div>
 
                                     <div class="float-right  ">
-                                        @Html.PagedListPager(Model, page => Url.Action("quanLyMonHoc", new { @page }), new PagedListRenderOptions
+                                        @Html.PagedListPager(Model, page => Url.Action("QuanLyTaiKhoan", new { @page }), new PagedListRenderOptions
                                            {
                                                LiElementClasses = new string[] { "paginate_button page-item" },
                                            })
@@ -146,66 +151,63 @@
             </div>
         </div>
         <div id="Fade_area" class="overlay">
-
         </div>
-
-        <div id="myModal" class="popup">
-            @Html.Partial("~/Views/Main/PopUpMh.cshtml")
+        @*<div id="createTkModal" class="popup">
+            @Html.Partial("~/Views/Main/PCreateTK.cshtml")
         </div>
-        <div id="delModal" class="popup">
-            @Html.Partial("~/Views/Main/PopUpDelete.cshtml")
+        <div id="delTkModal" class="popup">
+            @Html.Partial("~/Views/Main/PDelTK.cshtml")
         </div>
-        <div id="regisModal" class="popup">
-            @Html.Partial("~/Views/Main/PopUpRegis.cshtml")
-        </div>
-        <div id="createModal" class="popup">
-            @Html.Partial("~/Views/Main/PopUpCreate.cshtml")
-        </div>
+        <div id="editTkModal" class="popup">
+            @Html.Partial("~/Views/Main/PEdit.cshtml")
+        </div>*@
     </div>
 
     <script>
         $(document).ready(function () {
             $("#Cancel").click(function () {
-                //$(".overlay").removeAttr("style");
-                //$(".popup").removeAttr("style");
-                $("#Fade_area").removeAttr("style");
-                $(".partial, #myModal").removeAttr("style");
-                $(".partial,#delModal").removeAttr("style");
-                $(".partial,#regisModal").removeAttr("style");
+                $(".overlay").removeAttr("style");
+                $(".popup").removeAttr("style");
+                //$("#Fade_area").removeAttr("style");
+                //$(".partial, #myModal").removeAttr("style");
+                //$(".partial,#delModal").removeAttr("style");
+                //$(".partial,#regisModal").removeAttr("style");
 
             });
             $("#btnClose").click(function () {
                 $(".overlay").removeAttr("style");
                 $(".popup").removeAttr("style");
-                $("#Fade_area").removeAttr("style");
-                $("#myModal").removeAttr("style");
-                $("#delModal").removeAttr("style");
-                $("#regisModal").removeAttr("style");
+                //$("#Fade_area").removeAttr("style");
+                //$("#myModal").removeAttr("style");
+                //$("#delModal").removeAttr("style");
+                //$("#regisModal").removeAttr("style");
             });
         });
         var Edit = function (id) {
             $.ajax({
                 type: 'POST',
-                url: "/Main/FindMH",
+                url: "/Main/GetTK",
                 data: { Id: id },
                 success: function (data) {
-                    $("#maMon").val(data.MaMon)
-                    $("#tenMon").val(data.TenMon)
+                    $("#tenTK").val(data.TenTK)
+                    $("#mK").val(data.MatKhau)
+                    $("#quyen").val(data.Quyen)
                 }
             });
-            $("#Fade_area ,#myModal").fadeIn();
+            $("#Fade_area ,#editTkModal").fadeIn();
         }
         var Update = function () {
-            id = $("#maMon").val()
-            tenmon = $("#tenMon").val()
+            tentk   = $("#tenTK").val()
+            matkhau = $("#mK").val()
+            quyen   = $("#quyen").val()
             $.ajax({
                 type: 'POST',
-                url: "/Main/UpdateMonHoc2",
+                url: "/Main/UpdateTK",
                 data: { maMon: id, tenMon: tenmon },
                 success: function (data) {
                     $("#Fade_area").removeAttr("style");
-                    $("#myModal").removeAttr("style");
-                    $("#page-top").load("/Main/QuanLyMonHoc");
+                    $("#editModal").removeAttr("style");
+                    $("#page-top").load("/TaiKhoan/QuanLyTaiKhoan");
                 }
             });
         }
